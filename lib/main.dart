@@ -1,100 +1,140 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(const ProfileApp());
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class ProfileApp extends StatelessWidget {
+  const ProfileApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'My First Flutter App',
-      home: const CounterScreen(),
+      home: Scaffold(
+        appBar: AppBar(title: const Text('My Profile')),
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const ProfileCard(),
+              const SizedBox(height: 16),
+              const StatsRow(),
+              const SizedBox(height: 16),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        'About Me',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ), // TextStyle
+                      ), // Text
+                      const SizedBox(height: 8),
+                      const Text(
+                        'BSSE student aspiring to be a software engineer',// u are free to write whatever you want here as desc
+                      ), // Text
+                    ],
+                  ), // Column
+                ), // Padding
+              ), // Card
+            ],
+          ), // Column
+        ), // Center
+      ), // Scaffold
     ); // MaterialApp
   }
 }
 
-class CounterScreen extends StatefulWidget {
-  const CounterScreen({super.key});
+class ProfileCard extends StatelessWidget {
+  const ProfileCard({super.key});
 
   @override
-  State<CounterScreen> createState() => _CounterScreenState();
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 40,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ), // RoundedRectangleBorder
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: const [
+            CircleAvatar(
+              radius: 30,
+              child: Icon(Icons.person, size: 32),
+            ), // CircleAvatar
+            SizedBox(width: 16),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Jeremy Don Giyangan', //write ur name here :)
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  'Software Engineering',
+                  style: TextStyle(fontSize: 14, color: Colors.grey),
+                ),
+                Text(
+                  'jeremydon.giyangan-25@cpu.edu.ph',
+                  style: TextStyle(fontSize: 14, color: Colors.grey),
+                ),
+              ],
+            ), // Column
+          ], // Row children
+        ), // Row
+      ), // Padding
+    ); // Card
+  }
 }
 
-class _CounterScreenState extends State<CounterScreen> {
-  int _counter = 0;
+class StatsRow extends StatelessWidget {
+  const StatsRow({super.key});
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-  void _decrementCounter() {
-    setState(() {
-      _counter--;
-    });
+  Widget _statCard(String value, String label) {
+    return Expanded(
+      child: Card(
+        margin: const EdgeInsets.symmetric(horizontal: 10),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                value,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ), // TextStyle
+              ), // Text
+              Text(
+                label,
+                style: const TextStyle(fontSize: 12),
+              ), // Text
+            ],
+          ), // Column
+        ), // Padding
+      ), // Card
+    ); // Expanded
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.deepPurple.shade50,
-      appBar: AppBar(
-        title: const Text('My First Flutter App'),
-        backgroundColor: Colors.deepPurple,
-        foregroundColor: Colors.white,
-      ), // AppBar
-      body: Stack(
+    return SizedBox(
+      width: 320,
+      child: Row(
         children: [
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'You have pressed the button this many times:',
-                ), // Text
-                Text(
-                  '$_counter',
-                  style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-                ), // Text
-              ],
-            ), // Column
-          ), // Center
-          const Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: EdgeInsets.only(bottom: 20.0),
-              child: Text(
-                'Created by: Jeremy Don Giyangan',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontStyle: FontStyle.italic,
-                  color: Colors.deepPurple,
-                ), // TextStyle
-              ), // Text
-            ), // Padding
-          ), // Align
+          _statCard('90', 'Posts'),
+          _statCard('2.3M', 'Followers'),
+          _statCard('11', 'Following'),
         ],
-      ), // Stack
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            onPressed: _incrementCounter,
-            heroTag: 'increment',
-            child: const Icon(Icons.add),
-          ), // FloatingActionButton
-          const SizedBox(height: 12),
-          FloatingActionButton(
-            onPressed: _decrementCounter,
-            heroTag: 'decrement',
-            backgroundColor: Colors.deepPurple.shade200,
-            child: const Icon(Icons.remove),
-          ), // FloatingActionButton
-        ],
-      ), // Column
-    ); // Scaffold
+      ), // Row
+    ); // SizedBox
   }
 }
