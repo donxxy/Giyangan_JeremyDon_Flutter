@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'category_screen.dart';
+import 'home_screen.dart';
+import 'profilescreen.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -10,91 +11,49 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'My First Flutter App',
-      home: const CounterScreen(),
-    ); // MaterialApp
+      title: 'Mary Mart',
+      debugShowCheckedModeBanner: false,
+      home: const MainShell(),
+    );
   }
 }
 
-class CounterScreen extends StatefulWidget {
-  const CounterScreen({super.key});
+class MainShell extends StatefulWidget {
+  const MainShell({super.key});
 
   @override
-  State<CounterScreen> createState() => _CounterScreenState();
+  State<MainShell> createState() => _MainShellState();
 }
 
-class _CounterScreenState extends State<CounterScreen> {
-  int _counter = 0;
+class _MainShellState extends State<MainShell> {
+  int _selectedIndex = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-  void _decrementCounter() {
-    setState(() {
-      _counter--;
-    });
-  }
+  static const screens = [
+    HomeScreen(),
+    CategoryScreen(),
+    ProfileScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepPurple.shade50,
-      appBar: AppBar(
-        title: const Text('My First Flutter App'),
-        backgroundColor: Colors.deepPurple,
-        foregroundColor: Colors.white,
-      ), // AppBar
-      body: Stack(
-        children: [
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'You have pressed the button this many times:',
-                ), // Text
-                Text(
-                  '$_counter',
-                  style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-                ), // Text
-              ],
-            ), // Column
-          ), // Center
-          const Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: EdgeInsets.only(bottom: 20.0),
-              child: Text(
-                'Created by: Jeremy Don Giyangan',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontStyle: FontStyle.italic,
-                  color: Colors.deepPurple,
-                ), // TextStyle
-              ), // Text
-            ), // Padding
-          ), // Align
+      body: screens[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.category),
+            label: 'Categories',
+          ),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
-      ), // Stack
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            onPressed: _incrementCounter,
-            heroTag: 'increment',
-            child: const Icon(Icons.add),
-          ), // FloatingActionButton
-          const SizedBox(height: 12),
-          FloatingActionButton(
-            onPressed: _decrementCounter,
-            heroTag: 'decrement',
-            backgroundColor: Colors.deepPurple.shade200,
-            child: const Icon(Icons.remove),
-          ), // FloatingActionButton
-        ],
-      ), // Column
-    ); // Scaffold
+      ),
+    );
   }
 }
